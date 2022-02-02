@@ -7,7 +7,7 @@ module.exports = {
   reactScriptsVersion: "@bentley/react-scripts",
   webpack: {
     alias: {
-      // For development through npm link to avoid multiple instances of react.
+      // For development through npm link to avoid multiple instances of react/itwin.
       react: path.join(__dirname, 'node_modules/react'),
       'react-dom': path.join(__dirname, 'node_modules/react-dom'),
       '@itwin/appui-abstract': path.join(__dirname, 'node_modules/@itwin/appui-abstract'),
