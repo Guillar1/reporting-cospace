@@ -11,7 +11,7 @@ import { FitViewTool, IModelApp, StandardViewId } from '@itwin/core-frontend';
 import { useAccessToken, Viewer } from '@itwin/web-viewer-react';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { SvgMoon, SvgSun } from '@itwin/itwinui-icons-react';
-// import { GroupingMappingProvider } from '@itwin/grouping-mapping-widget';
+import { GroupingMappingProvider } from '@itwin/grouping-mapping-widget';
 
 import { history } from './history';
 import { Button, IconButton, ThemeType, useTheme } from '@itwin/itwinui-react';
@@ -151,7 +151,7 @@ const App: React.FC = () => {
           viewCreatorOptions={viewCreatorOptions}
           enablePerformanceMonitors={true} // see description in the README (https://www.npmjs.com/package/@itwin/desktop-viewer-react)
           theme={theme}
-        // uiProviders={[new GroupingMappingProvider()]}
+          uiProviders={[new GroupingMappingProvider()]}
         />
       </div>
     </>
