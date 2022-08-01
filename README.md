@@ -1,47 +1,23 @@
-# Getting Started with the iTwin Viewer Create React App Template
+# CoSpace
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Setup a `CoSpace` to link multiple (mono)repos together!
 
-## Grouping & Mapping Widget Development
+## Powered by
 
-1. Please follow the [Build Instructions](https://github.com/iTwin/viewer-components-react/blob/master/CONTRIBUTING.md#build-instructions) for Viewer Components React.
-2. Go into `packages\itwin\grouping-mapping-widget` folder in the Viewer Components React directory.
-3. Run `npm link`
-4. Clone this repository in another folder. `git clone`
-5. In the root folder of this app, run `npm install`
-6. After completion, `npm link @itwin/grouping-mapping-widget`
-7. Populate .env variables.
-8. `npm start` will run the app.
+- [vscode multi-root workspace](https://code.visualstudio.com/docs/editor/multi-root-workspaces)
+- [pnpm workspaces](https://pnpm.io/workspaces)
+- [lage](https://microsoft.github.io/lage/)
 
-## Environment Variables
+## Getting started
 
-Prior to running the app, you will need to add OIDC client configuration to the variables in the .env file with the required scopes:
+1. Clone all the repos you want to link together under the `repos` directory.
 
-```
-# ---- Authorization Client Settings ----
-IMJS_AUTH_CLIENT_CLIENT_ID=""
-IMJS_AUTH_CLIENT_REDIRECT_URI = "http://localhost:3000/signin-callback"
-IMJS_AUTH_CLIENT_LOGOUT_URI = ""
-IMJS_AUTH_CLIENT_SCOPES ="imodels:read insights:modify insights:read imodelaccess:read projects:read"
-```
+1. Update the [pnpm-workspace.yaml](pnpm-workspace.yaml) file with all the packages you want to add to your CoSpace.
 
-DEV:
+1. Update the [cospace.code-workspace](cospace.code-workspace) file with all the repos you want to add to your VsCode multi root workspace.
 
-```
-IMJS_AUTH_AUTHORITY="https://qa-ims.bentley.com"
-IMJS_URL_PREFIX="dev-"
-```
+1. (Optional) Run `pnpm setOverrides` to automatically update the `pnpm.overrides` section of the CoSpace's [package.json](package.json), to use the local package version from the workspace, disregarding semver. Useful for when you have pre-release versions of packages in your workspace.
 
-QA:
+1. Run `pnpm install` to install all the packages you've added to your CoSpace.
 
-```
-IMJS_AUTH_AUTHORITY="https://qa-ims.bentley.com"
-IMJS_URL_PREFIX="qa-"
-```
-
-PROD:
-
-```
-IMJS_AUTH_AUTHORITY="https://ims.bentley.com"
-IMJS_URL_PREFIX=""
-```
+1. Run `pnpm build` to build all the packages you've added to your CoSpace using your monorepo task runner. I'm using [lage](https://microsoft.github.io/lage/), but [turborepo](https://turborepo.org/docs) should theoretically work.

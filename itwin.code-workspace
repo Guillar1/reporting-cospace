@@ -1,0 +1,25 @@
+{
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "repos\\viewer"
+    },
+    {
+      "name": "vcr",
+      "path": "repos\\viewer-components-react"
+    },
+  ],
+  "settings": {
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/lib": true,
+    },
+    "files.exclude": {
+      "**/lib": false,
+      "**/node_modules": false,
+      "repos/": false
+    }
+  }
+}
