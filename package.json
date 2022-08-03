@@ -8,7 +8,8 @@
     "build:clean": "lage build --no-cache",
     "build:profile": "lage build --no-cache --profile",
     "clean": "lage clean --no-cache && cospace purge && pnpm i -w cospace",
-    "setOverrides": "cospace override"
+    "setOverrides": "cospace override",
+    "start": "pnpm start --filter reporting-viewer"
   },
   "packageManager": "pnpm@6.32.3",
   "devDependencies": {

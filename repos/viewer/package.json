@@ -1,5 +1,5 @@
 {
-  "name": "reporting-dev-app",
+  "name": "reporting-viewer",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

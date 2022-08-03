@@ -4648,8 +4648,8 @@ packages:
       rollup: 1.32.1
     dev: false
 
-  /@rushstack/node-core-library/3.50.0:
-    resolution: {integrity: sha512-FFEZhgu6iN1MVjpQWmLcz46pSa4r2Oe2JYPo7mtnl3uYfwDaSXUSZuRN3JQgKkXu10TBcffJ7AGKcIt/k+qE/Q==}
+  /@rushstack/node-core-library/3.50.1:
+    resolution: {integrity: sha512-9d2xE7E9yQEBS6brTptdP8cslt6iL5+UnkY2lRxQQ4Q/jlXtsrWCCJCxwr56W/eJEe9YT/yHR4mMn5QY64Ps2w==}
     dependencies:
       '@types/node': 12.20.24
       colors: 1.2.5
@@ -4662,10 +4662,10 @@ packages:
       z-schema: 5.0.3
     dev: true
 
-  /@rushstack/package-deps-hash/3.2.37:
-    resolution: {integrity: sha512-v3Jv0HHUFt7fJw/axLEPmPKbrvYAt7SgHopa9a9LW+Uwo9pyrygmLu12NqzmP4Deolkw0FiEzfIiT9MgMj2KNw==}
+  /@rushstack/package-deps-hash/3.2.38:
+    resolution: {integrity: sha512-X8Ld5pdyP/OrBGyY2mQZxV0XK5TgPyI42zttJRWGpmMnHm7dZa+7kOzPvnW8JXpxGvgPtzMGtzXGGlpu/kXqHw==}
     dependencies:
-      '@rushstack/node-core-library': 3.50.0
+      '@rushstack/node-core-library': 3.50.1
     dev: true
 
   /@sinonjs/commons/1.8.3:
@@ -6576,7 +6576,7 @@ packages:
     resolution: {integrity: sha512-BaVakWMiCR/varXPE00QFqyfoWSikIIZMqNGt1JQEJ+MgkBBq4oHu4a3L2o1/u7IMOxKFXkz8sNXM+wyNSfAuA==}
     dependencies:
       '@azure/storage-blob': 12.1.2
-      '@rushstack/package-deps-hash': 3.2.37
+      '@rushstack/package-deps-hash': 3.2.38
       backfill-config: 6.3.0
       backfill-logger: 5.1.3
       execa: 4.1.0
@@ -6601,7 +6601,7 @@ packages:
   /backfill-hasher/6.4.1:
     resolution: {integrity: sha512-ZiIo77UCBgTnojK9+4DQVEn9yeJQn2+KW9gh22coS45I3pNqAHflxALIyfIosQwz7Fos/peGj8iuWHw2Ieuurg==}
     dependencies:
-      '@rushstack/package-deps-hash': 3.2.37
+      '@rushstack/package-deps-hash': 3.2.38
       backfill-config: 6.3.0
       backfill-logger: 5.1.3
       find-up: 5.0.0
