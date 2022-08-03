@@ -209,61 +209,61 @@ importers:
   repos/viewer-components-react/packages/itwin/reports-config-widget:
     specifiers:
       '@faker-js/faker': 6.2.0
-      '@itwin/appui-abstract': ^3.2.7
-      '@itwin/appui-layout-react': ^3.2.7
-      '@itwin/appui-react': ^3.2.7
-      '@itwin/build-tools': ^3.2.7
-      '@itwin/components-react': ^3.2.7
-      '@itwin/core-bentley': ^3.2.7
-      '@itwin/core-common': ^3.2.7
-      '@itwin/core-frontend': ^3.2.7
-      '@itwin/core-geometry': ^3.2.7
-      '@itwin/core-markup': ^3.2.7
-      '@itwin/core-orbitgt': ^3.2.7
-      '@itwin/core-quantity': ^3.2.7
-      '@itwin/core-react': ^3.2.7
-      '@itwin/eslint-plugin': ^3.2.7
-      '@itwin/imodel-components-react': ^3.2.7
-      '@itwin/imodels-access-frontend': ^1.0.2
-      '@itwin/imodels-client-management': ^1.1.0
-      '@itwin/insights-client': ^0.2.1
-      '@itwin/itwinui-css': ^0.50.1
-      '@itwin/itwinui-icons-color-react': ^1.0.3
-      '@itwin/itwinui-icons-react': ^1.12.0
+      '@itwin/appui-abstract': ^3.0.0
+      '@itwin/appui-layout-react': ^3.0.0
+      '@itwin/appui-react': ^3.0.0
+      '@itwin/build-tools': ^3.0.0
+      '@itwin/components-react': ^3.0.0
+      '@itwin/core-bentley': ^3.0.0
+      '@itwin/core-common': ^3.0.0
+      '@itwin/core-frontend': ^3.0.0
+      '@itwin/core-geometry': ^3.0.0
+      '@itwin/core-markup': ^3.0.0
+      '@itwin/core-orbitgt': ^3.0.0
+      '@itwin/core-quantity': ^3.0.0
+      '@itwin/core-react': ^3.0.0
+      '@itwin/eslint-plugin': ^3.0.0
+      '@itwin/imodel-components-react': ^3.0.0
+      '@itwin/imodels-access-frontend': ^1.0.1
+      '@itwin/imodels-client-management': ^1.0.1
+      '@itwin/insights-client': ^0.2.0
+      '@itwin/itwinui-css': ^0.50.0
+      '@itwin/itwinui-icons-color-react': ^1.0.1
+      '@itwin/itwinui-icons-react': ^1.7.0
       '@itwin/itwinui-react': ~1.42.0
-      '@itwin/presentation-common': ^3.2.7
-      '@itwin/presentation-frontend': ^3.2.7
-      '@itwin/webgl-compatibility': ^3.2.7
-      '@testing-library/dom': ^8.16.0
-      '@testing-library/jest-dom': ^5.16.4
-      '@testing-library/react': ^12.1.5
-      '@testing-library/user-event': ^14.4.1
-      '@types/i18next': ^8.4.6
-      '@types/jest': ^27.5.2
-      '@types/node': ^14.18.23
-      '@types/react': ^17.0.48
-      '@types/react-dom': ^17.0.17
-      '@types/react-table': ^7.7.12
-      '@types/testing-library__jest-dom': ^5.14.5
-      '@typescript-eslint/eslint-plugin': ^5.32.0
-      '@typescript-eslint/parser': ^5.32.0
-      cpx2: ^3.0.2
+      '@itwin/presentation-common': ^3.0.0
+      '@itwin/presentation-frontend': ^3.0.0
+      '@itwin/webgl-compatibility': ^3.0.0
+      '@testing-library/dom': ^8.12.0
+      '@testing-library/jest-dom': ^5.16.3
+      '@testing-library/react': ^12.1.4
+      '@testing-library/user-event': ^14.1.1
+      '@types/i18next': ^8.4.2
+      '@types/jest': ^27.4.1
+      '@types/node': ^14.14.20
+      '@types/react': ^17.0.19
+      '@types/react-dom': ^17.0.9
+      '@types/react-table': ^7.7.0
+      '@types/testing-library__jest-dom': ^5.14.3
+      '@typescript-eslint/eslint-plugin': ^5.3.1
+      '@typescript-eslint/parser': ^5.10.1
+      cpx2: ^3.0.0
       eslint: ^7.32.0
       eslint-plugin-node: ^11.1.0
-      eslint-plugin-react: ^7.30.1
-      eslint-plugin-react-hooks: ^4.6.0
+      eslint-plugin-react: ^7.25.1
+      eslint-plugin-react-hooks: ^4.2.0
       jest: ^27.5.1
       jest-cli: ^27.5.1
       jest-transform-stub: ^2.0.0
       msw: ^0.39.2
       react: ^17.0.2
       react-dom: ^17.0.2
-      redux: ^4.2.0
+      redux: ^4.0.4
       rimraf: ^3.0.2
       simple-react-validator: ^1.6.1
-      ts-jest: ^27.1.5
+      ts-jest: ^27.1.3
       typemoq: ^2.1.0
-      typescript: ~4.3.5
+      typescript: ~4.3.0
       xmlhttprequest: ^1.8.0
     dependencies:
       '@itwin/imodels-access-frontend': 1.0.2_9e13c1e508d139ce7e3d3ddd2f6309fa
@@ -3159,7 +3159,7 @@ packages:
       '@itwin/core-react': 3.2.7_7ee3368651d2abd7fd1f74c1051802cd
       '@itwin/core-telemetry': 3.2.7_@itwin+core-geometry@3.2.7
       '@itwin/imodel-components-react': 3.2.7_907e54edba9994e72f6d11f74b8befa1
-      '@itwin/itwinui-css': 0.50.1
+      '@itwin/itwinui-css': 0.63.0
       '@itwin/itwinui-icons-react': 1.12.0_react-dom@17.0.2+react@17.0.2
       '@itwin/itwinui-react': 1.42.0_react-dom@17.0.2+react@17.0.2
       '@itwin/presentation-common': 3.2.7_bb40035dd46a33391a6f3f784a0e1f68
@@ -3350,7 +3350,7 @@ packages:
       '@bentley/icons-generic-webfont': 1.0.34
       '@itwin/appui-abstract': 3.2.7_@itwin+core-bentley@3.2.7
       '@itwin/core-bentley': 3.2.7
-      '@itwin/itwinui-css': 0.50.1
+      '@itwin/itwinui-css': 0.63.0
       '@itwin/itwinui-react': 1.42.0_react-dom@17.0.2+react@17.0.2
       classnames: 2.3.1
       dompurify: 2.3.10
@@ -3452,7 +3452,7 @@ packages:
       '@itwin/core-geometry': 3.2.7
       '@itwin/core-quantity': 3.2.7_@itwin+core-bentley@3.2.7
       '@itwin/core-react': 3.2.7_7ee3368651d2abd7fd1f74c1051802cd
-      '@itwin/itwinui-css': 0.50.1
+      '@itwin/itwinui-css': 0.63.0
       '@itwin/itwinui-react': 1.42.0_react-dom@17.0.2+react@17.0.2
       callable-instance2: 1.0.0
       classnames: 2.3.1
@@ -3865,7 +3865,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       chalk: 4.1.2
       jest-message-util: 27.5.1
       jest-util: 27.5.1
@@ -3926,7 +3926,7 @@ packages:
       '@jest/test-result': 27.5.1
       '@jest/transform': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.8.1
@@ -3973,7 +3973,7 @@ packages:
     dependencies:
       '@jest/fake-timers': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       jest-mock: 27.5.1
     dev: true
 
@@ -3995,7 +3995,7 @@ packages:
     dependencies:
       '@jest/types': 27.5.1
       '@sinonjs/fake-timers': 8.1.0
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       jest-message-util: 27.5.1
       jest-mock: 27.5.1
       jest-util: 27.5.1
@@ -4067,7 +4067,7 @@ packages:
       '@jest/test-result': 27.5.1
       '@jest/transform': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       chalk: 4.1.2
       collect-v8-coverage: 1.0.1
       exit: 0.1.2
@@ -4221,7 +4221,7 @@ packages:
     dependencies:
       '@types/istanbul-lib-coverage': 2.0.4
       '@types/istanbul-reports': 3.0.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       '@types/yargs': 16.0.4
       chalk: 4.1.2
     dev: true
@@ -4938,7 +4938,7 @@ packages:
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
 
   /@types/history/4.7.11:
     resolution: {integrity: sha512-qjDJRrmvBMiTx+jyLxvLfJU7UznFuokDv4f3WRuriHKERccVpFU+8XMQUAbDzoiJCsmexxRExQeMwwCdamSKDA==}
@@ -5011,7 +5011,6 @@ packages:
 
   /@types/node/18.6.3:
     resolution: {integrity: sha512-6qKpDtoaYLM+5+AFChLhHermMQxc3TOEFIDzrZLPRGHPrLEwqFkkT5Kx3ju05g6X7uDPazz3jHbKPX0KzCjntg==}
-    dev: true
 
   /@types/node/8.10.54:
     resolution: {integrity: sha512-kaYyLYf6ICn6/isAyD4K1MyWWd5Q3JgH6bnMN089LUx88+s4W8GvK9Q6JMBVu5vsFFp7pMdSxdKmlBXwH/VFRg==}
@@ -5070,7 +5069,7 @@ packages:
   /@types/set-cookie-parser/2.4.2:
     resolution: {integrity: sha512-fBZgytwhYAUkj/jC/FAV4RQ5EerRup1YQsXQCh8rZfiHkc4UahC192oH0smGwsXol3cL3A5oETuAHeQHmhXM4w==}
     dependencies:
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
     dev: true
 
   /@types/shortid/0.0.29:
@@ -8731,7 +8730,6 @@ packages:
     dependencies:
       debug: 3.2.7
       resolve: 1.22.1
-    dev: false
 
   /eslint-import-resolver-typescript/2.4.0_ee2ddb12623c985c36290f985ad5559c:
     resolution: {integrity: sha512-useJKURidCcldRLCNKWemr1fFQL1SzB3G4a0li6lFGvlc5xGe1hY343bvG07cbpCzPuM/lK19FIJB3XGFSkplA==}
@@ -8806,7 +8804,7 @@ packages:
       debug: 2.6.9
       doctrine: 2.1.0
       eslint: 7.32.0
-      eslint-import-resolver-node: 0.3.4
+      eslint-import-resolver-node: 0.3.6
       eslint-module-utils: 2.7.3
       find-up: 2.1.0
       has: 1.0.3
@@ -10625,7 +10623,7 @@ packages:
     engines: {node: '>=12.0.0'}
     dependencies:
       ansi-escapes: 4.3.2
-      chalk: 4.1.1
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-width: 3.0.0
       external-editor: 3.1.0
@@ -11197,7 +11195,7 @@ packages:
       '@jest/environment': 27.5.1
       '@jest/test-result': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       chalk: 4.1.2
       co: 4.6.0
       dedent: 0.7.0
@@ -11428,7 +11426,7 @@ packages:
       '@jest/environment': 27.5.1
       '@jest/fake-timers': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       jest-mock: 27.5.1
       jest-util: 27.5.1
       jsdom: 16.7.0
@@ -11458,7 +11456,7 @@ packages:
       '@jest/environment': 27.5.1
       '@jest/fake-timers': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       jest-mock: 27.5.1
       jest-util: 27.5.1
     dev: true
@@ -11500,7 +11498,7 @@ packages:
     dependencies:
       '@jest/types': 27.5.1
       '@types/graceful-fs': 4.1.5
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       anymatch: 3.1.2
       fb-watchman: 2.0.1
       graceful-fs: 4.2.10
@@ -11552,7 +11550,7 @@ packages:
       '@jest/source-map': 27.5.1
       '@jest/test-result': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       chalk: 4.1.2
       co: 4.6.0
       expect: 27.5.1
@@ -11648,7 +11646,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
     dev: true
 
   /jest-pnp-resolver/1.2.2_jest-resolve@26.6.0:
@@ -11802,7 +11800,7 @@ packages:
       '@jest/test-result': 27.5.1
       '@jest/transform': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       chalk: 4.1.2
       emittery: 0.8.1
       graceful-fs: 4.2.10
@@ -11907,7 +11905,7 @@ packages:
     resolution: {integrity: sha512-jZCyo6iIxO1aqUxpuBlwTDMkzOAJS4a3eYz3YzgxxVQFwLeSA7Jfq5cbqCY+JLvTDrWirgusI/0KwxKMgrdf7w==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       graceful-fs: 4.2.10
     dev: true
 
@@ -11984,7 +11982,7 @@ packages:
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       chalk: 4.1.2
       ci-info: 3.3.2
       graceful-fs: 4.2.10
@@ -12050,7 +12048,7 @@ packages:
     dependencies:
       '@jest/test-result': 27.5.1
       '@jest/types': 27.5.1
-      '@types/node': 14.18.23
+      '@types/node': 18.6.3
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       jest-util: 27.5.1
@@ -12547,7 +12545,7 @@ packages:
     resolution: {integrity: sha512-8XPvpAA8uyhfteu8pIvQxpJZ7SYYdpUivZpGy6sFsBuKRY/7rQGavedeB8aK+Zkyq6upMFVL/9AW6vOYzfRyLg==}
     engines: {node: '>=10'}
     dependencies:
-      chalk: 4.1.1
+      chalk: 4.1.2
       is-unicode-supported: 0.1.0
     dev: true
 
@@ -13536,7 +13534,7 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       bl: 4.1.0
-      chalk: 4.1.1
+      chalk: 4.1.2
       cli-cursor: 3.1.0
       cli-spinners: 2.7.0
       is-interactive: 1.0.0

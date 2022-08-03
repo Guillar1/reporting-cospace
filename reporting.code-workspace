@@ -20,6 +20,7 @@
       "**/lib": false,
       "**/node_modules": false,
       "repos/": false
-    }
+    },
+    "eslint.workingDirectories": ["repos/iOS", "repos/viewer-components-react"]
   }
 }
