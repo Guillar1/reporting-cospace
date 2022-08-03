@@ -2,5 +2,6 @@ packages:
   - "repos/viewer"
   # https://github.com/iTwin/viewer-components-react
   - "repos/viewer-components-react/packages/itwin/grouping-mapping-widget"
-  - "repos/viewer-components-react/packages/itwin/one-click-lca-widget"
+  # Broken
+  # - "repos/viewer-components-react/packages/itwin/one-click-lca-widget"
   - "repos/viewer-components-react/packages/itwin/reports-config-widget"

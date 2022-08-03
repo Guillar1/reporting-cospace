@@ -18,7 +18,6 @@
   "pnpm": {
     "overrides": {
       "@itwin/grouping-mapping-widget": "workspace:*",
-      "@itwin/one-click-lca-react": "workspace:*",
       "@itwin/reports-config-widget-react": "workspace:*"
     },
     "prefer-workspace-packages": true,
