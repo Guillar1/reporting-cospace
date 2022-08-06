@@ -1,6 +1,7 @@
 import { ScreenViewport, IModelApp, FitViewTool, StandardViewId } from "@itwin/core-frontend";
 import { GroupingMappingProvider } from "@itwin/grouping-mapping-widget";
 import { ThemeType } from "@itwin/itwinui-react";
+import { OneClickLCAProvider } from "@itwin/one-click-lca-react";
 import { ReportsConfigWidget, ReportsConfigProvider, REPORTS_CONFIG_BASE_URL } from "@itwin/reports-config-widget-react";
 import { Viewer, ViewerAuthorizationClient } from "@itwin/web-viewer-react";
 import React from "react";
@@ -72,7 +73,7 @@ export const SampleViewer = ({ iTwinId, iModelId, authClient, prefix }: SampleVi
       // additionalI18nNamespaces={["ReportsConfigWidget"]}
       enablePerformanceMonitors={true} // see description in the README (https://www.npmjs.com/package/@itwin/desktop-viewer-react)
       theme={theme}
-      uiProviders={[new GroupingMappingProvider({ prefix: prefix }), new ReportsConfigProvider(undefined, prefixUrl(REPORTS_CONFIG_BASE_URL, process.env.IMJS_URL_PREFIX))]} />
+      uiProviders={[new GroupingMappingProvider({ prefix: prefix }), new ReportsConfigProvider(undefined, prefixUrl(REPORTS_CONFIG_BASE_URL, process.env.IMJS_URL_PREFIX)), new OneClickLCAProvider()]} />
   )
 
   // new ReportsConfigProvider(undefined, prefixUrl(REPORTS_CONFIG_BASE_URL, process.env.IMJS_URL_PREFIX))
