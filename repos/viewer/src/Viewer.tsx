@@ -72,7 +72,7 @@ export const SampleViewer = ({ iTwinId, iModelId, authClient, prefix }: SampleVi
       // onIModelAppInit={handleOnIModelAppInit}
       // additionalI18nNamespaces={["ReportsConfigWidget"]}
       enablePerformanceMonitors={true} // see description in the README (https://www.npmjs.com/package/@itwin/desktop-viewer-react)
-      theme={theme}
+      theme={"dark"}
       uiProviders={[new GroupingMappingProvider({ prefix: prefix }), new ReportsConfigProvider(undefined, prefixUrl(REPORTS_CONFIG_BASE_URL, process.env.IMJS_URL_PREFIX)), new OneClickLCAProvider()]} />
   )
 
