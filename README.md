@@ -16,8 +16,10 @@ Setup a `CoSpace` to link multiple (mono)repos together!
 
 1. Update the [cospace.code-workspace](cospace.code-workspace) file with all the repos you want to add to your VsCode multi root workspace.
 
-1. (Optional) Run `pnpm setOverrides` to automatically update the `pnpm.overrides` section of the CoSpace's [package.json](package.json), to use the local package version from the workspace, disregarding semver. Useful for when you have pre-release versions of packages in your workspace.
-
 1. Run `pnpm install` to install all the packages you've added to your CoSpace.
 
 1. Run `pnpm build` to build all the packages you've added to your CoSpace using your monorepo task runner. I'm using [lage](https://microsoft.github.io/lage/), but [turborepo](https://turborepo.org/docs) should theoretically work.
+
+## Updating packages in Viewer Components React
+
+- Must be done in another folder. Running `rush install` or `rush update` within the CoSpace will break it.
