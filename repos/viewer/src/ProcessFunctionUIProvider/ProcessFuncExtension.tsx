@@ -1,5 +1,5 @@
 import { LoadingSpinner } from "@itwin/core-react";
-import { GroupUIComponentProps } from "@itwin/grouping-mapping-widget";
+import { GroupingCustomUIProps } from "@itwin/grouping-mapping-widget";
 import { Button, LabeledTextarea } from "@itwin/itwinui-react";
 import React from "react";
 
@@ -7,7 +7,7 @@ const ProcessFuncUIProvider = ({
     updateQuery,
     isUpdating,
     resetView,
-}: GroupUIComponentProps) => {
+}: GroupingCustomUIProps) => {
     const [searchInput, setSearchInput] = React.useState("");
 
     const generateSearchQuery = (keyword: string) => {

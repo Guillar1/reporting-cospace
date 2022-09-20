@@ -4,7 +4,7 @@ import {
   FitViewTool,
   StandardViewId,
 } from "@itwin/core-frontend";
-import { CustomUIProviderTypes, GroupingMappingProvider, MappingsClient } from "@itwin/grouping-mapping-widget";
+import { GroupingMappingCustomUIType, GroupingMappingProvider, MappingsClient } from "@itwin/grouping-mapping-widget";
 import { SvgClash, SvgFunction, SvgProcess, SvgSun } from "@itwin/itwinui-icons-react";
 import { ThemeType, toaster } from "@itwin/itwinui-react";
 import { OneClickLCAProvider } from "@itwin/one-click-lca-react";
@@ -96,22 +96,29 @@ export const SampleViewer = ({
       theme={theme}
       uiProviders={[
         new GroupingMappingProvider({
-          uiProviders: [
+          customUIs: [
             {
-              type: CustomUIProviderTypes.GROUP,
-              name: "ProcessFunc",
-              displayLabel: "Process Functional",
-              uiComponent: ProcessFuncExtension,
-              icon: <SvgFunction />,
-            },
-            {
-              type: CustomUIProviderTypes.CONTEXT,
-              name: "ClashDetection",
-              displayLabel: "Clash Detection",
-              callback: customCB,
-              // uiComponent: ClashDetectionUIProvider,
-              icon:  <SvgClash />
+                type: GroupingMappingCustomUIType.GROUP,
+                name: "ProcessFunc",
+                displayLabel: "Process Functional",
+                uiComponent: ProcessFuncExtension,
+                icon: <SvgFunction />,
             }
+            // {
+            //   type: GroupingMappingCustomUIType.GROUP,
+            //   name: "ProcessFunc",
+            //   displayLabel: "Process Functional",
+            //   uiComponent: ProcessFuncExtension,
+            //   icon: <SvgFunction />,
+            // },
+            // {
+            //   type: GroupingMappingCustomUIType.CONTEXT,
+            //   name: "ClashDetection",
+            //   displayLabel: "Clash Detection",
+            //   callback: customCB,
+            //   uiComponent: ClashDetectionUIProvider,
+            //   icon:  <SvgClash />
+            // }
           ],
         }),
       ]}
