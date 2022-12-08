@@ -14,6 +14,9 @@ import { IModelFull, ProjectFull } from "@itwin/imodel-browser-react";
 import { SampleViewer } from "./Viewer";
 import { AccessToken } from "@itwin/core-bentley";
 import AuthClient from "./AuthClient";
+import useMediaQuery from "beautiful-react-hooks/useMediaQuery";
+import { IconButton, Tooltip, useTheme } from "@itwin/itwinui-react";
+import { SvgMoon, SvgSun } from "@itwin/itwinui-icons-react";
 
 export const prefixUrl = (baseUrl?: string, prefix?: string) => {
   if (prefix && baseUrl) {
@@ -31,6 +34,9 @@ const App: React.FC = () => {
   const [iTwinId, setITwinId] = useState<string>(
     searchParams.get("iTwinId") ?? ""
   );
+
+  const [isDark, setIsDark] = React.useState(useMediaQuery('(prefers-color-scheme: dark)'));
+  useTheme(isDark ? 'dark' : 'light');
 
   useEffect(() => {
     const initAuth = async () => {
@@ -70,6 +76,13 @@ const App: React.FC = () => {
 
   return (
     <PageLayout>
+      <PageLayout.Header>
+        <Tooltip content={`Switch to ${isDark ? 'light' : 'dark'} theme`} placement='left'>
+          <IconButton className='App-theme-icon' styleType='borderless' onClick={() => setIsDark((dark) => !dark)}>
+            {isDark ? <SvgSun /> : <SvgMoon />}
+          </IconButton>
+        </Tooltip>
+      </PageLayout.Header>
       <PageLayout.Content>
         {iTwinId && iModelId && AuthClient.client ? (
           <SampleViewer

@@ -7,7 +7,8 @@
     "build": "lage build",
     "build:clean": "lage build --no-cache",
     "build:profile": "lage build --no-cache --profile",
-    "clean": "lage clean --no-cache && cospace purge && pnpm i -w cospace",
+    "clean": "lage clean --no-cache",
+    "purge": "lage clean --no-cache && cospace purge && pnpm i -w cospace",
     "setOverrides": "cospace override",
     "start:viewer": "pnpm start --dir ./repos/viewer"
   },
