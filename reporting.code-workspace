@@ -7,6 +7,9 @@
       "path": "repos\\viewer"
     },
     {
+      "path": "repos\\components-sample"
+    },
+    {
       "name": "vcr",
       "path": "repos\\viewer-components-react"
     },
