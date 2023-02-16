@@ -37,7 +37,7 @@ export class GroupProvider implements UiItemsProvider {
         id: "groups",
         label: this._props.mapping ? `Groups for ${this._props.mapping?.mappingName}` : 'Groups',
         getWidgetContent: () => {
-          return <WidgetContent>{this._props.mapping ? <Groupings mapping={this._props.mapping} emphasizeElements={this._props.emphasizeElements} /> : <Text>Please select a mapping</Text>}</WidgetContent>
+          return <WidgetContent>{this._props.mapping ? <Groupings mapping={this._props.mapping} emphasizeElements={this._props.emphasizeElements} /> : <Text>Please select a workflow</Text>}</WidgetContent>
         },
       };
 

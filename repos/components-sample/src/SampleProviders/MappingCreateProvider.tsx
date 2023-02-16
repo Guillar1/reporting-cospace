@@ -34,9 +34,9 @@ export class MappingCreateProvider implements UiItemsProvider {
     ) {
       const MappingCreateWidget: AbstractWidgetProps = {
         id: "createMapping",
-        label: "Create Mapping",
+        label: "Create Workflow",
         getWidgetContent: () => {
-          return <WidgetContent><MappingAction {...this._props} /></WidgetContent>;
+          return <WidgetContent><MappingAction displayStrings={{ mappingDetails: "Workflow Details" }} {...this._props} /></WidgetContent>;
         },
       };
 

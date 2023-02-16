@@ -35,7 +35,7 @@ export class MappingProvider implements UiItemsProvider {
     ) {
       const MappingWidget: AbstractWidgetProps = {
         id: "mappings",
-        label: "Mappings",
+        label: "Workflows",
         getWidgetContent: () => {
           return <WidgetContent><Mappings {...this._props} /></WidgetContent>
         },
