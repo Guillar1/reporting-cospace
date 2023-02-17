@@ -5,7 +5,10 @@ import {
   StandardViewId,
 } from "@itwin/core-frontend";
 import {
-  GroupingMappingContext, GroupingMappingCustomUI, GroupingMappingCustomUIType, GroupQueryBuilderCustomUI, ManualGroupingCustomUI, Mapping, SearchGroupingCustomUI
+  CalculatedProperty,
+  CustomCalculation,
+  Group,
+  GroupingMappingContext, GroupingMappingCustomUI, GroupingMappingCustomUIType, GroupProperty, GroupQueryBuilderCustomUI, ManualGroupingCustomUI, Mapping, SearchGroupingCustomUI
 } from "@itwin/grouping-mapping-widget";
 import {
   ItwinViewerUi,
@@ -32,6 +35,9 @@ import { SvgCursor, SvgDraw, SvgSearch } from "@itwin/itwinui-icons-react";
 import { toaster } from "@itwin/itwinui-react";
 import { MappingCreateProvider } from "./SampleProviders/MappingCreateProvider";
 import { MappingModifyProvider } from "./SampleProviders/MappingModifyProvider";
+import { PropertyMenuProvider } from "./SampleProviders/PropertyMenuProvider";
+import { GroupPropertyCreateProvider } from "./SampleProviders/GroupPropertyCreateProvider";
+import { GroupPropertyModifyProvider } from "./SampleProviders/GroupPropertyModifyProvider";
 
 interface SampleViewerProps {
   iTwinId: string;
@@ -79,6 +85,10 @@ export const SampleViewer = ({
 }: SampleViewerProps) => {
   const [mapping, setMapping] = useState<Mapping | undefined>()
   const [modifyingMapping, setModifyingMapping] = useState<Mapping | undefined>();
+  const [group, setGroup] = useState<Group | undefined>();
+  const [modifyingProperty, setModifyingProperty] = useState<GroupProperty | undefined>();
+  const [modifyingCalculatedProperty, setModifyingCalculatedProperty] = useState<CalculatedProperty | undefined>();
+  const [modifyingCustomCalculation, setModifyingCustomCalculation] = useState<CustomCalculation | undefined>();
 
 
   /** NOTE: This function will execute the "Fit View" tool after the iModel is loaded into the Viewer.
@@ -144,9 +154,19 @@ export const SampleViewer = ({
       },
       onClickCancel: () => { setModifyingMapping(undefined) }
     }) : [],
-    new GroupProvider({ mapping: mapping, emphasizeElements: false }),
-    mapping ? new GroupActionProvider({ mappingId: mapping.id, onSaveSuccess: displaySaveSuccess, queryGenerationType: "Selection" }) : []
-  ].flatMap((x) => x), [mapping, modifyingMapping])
+    new GroupProvider({ mapping: mapping, emphasizeElements: false, onClickGroupTitle: setGroup }),
+    mapping ? new GroupActionProvider({ mappingId: mapping.id, onSaveSuccess: displaySaveSuccess, queryGenerationType: "Selection" }) : [],
+    new PropertyMenuProvider({ mapping: mapping, group: group, onClickModifyGroupProperty: setModifyingProperty, onClickModifyCalculatedProperty: setModifyingCalculatedProperty, onClickModifyCustomCalculation: setModifyingCustomCalculation }),
+    mapping && group ? new GroupPropertyCreateProvider({ onSaveSuccess: displaySaveSuccess, mapping: mapping, group: group }) : [],
+    mapping && group && modifyingProperty ? new GroupPropertyModifyProvider({
+      mapping: mapping, group: group, groupProperty: modifyingProperty,
+      onSaveSuccess: () => {
+        displaySaveSuccess();
+        setModifyingProperty(undefined)
+      },
+      onClickCancel: () => setModifyingProperty(undefined)
+    }) : []
+  ].flatMap((x) => x), [modifyingMapping, mapping, group, modifyingProperty])
 
 
   return (

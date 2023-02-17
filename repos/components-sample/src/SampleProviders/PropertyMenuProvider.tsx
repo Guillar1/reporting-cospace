@@ -12,18 +12,30 @@ import {
   StageUsage,
 } from "@itwin/appui-abstract";
 import { WidgetContent } from "../WidgetContent";
-import { Group, Groupings, Mapping } from "@itwin/grouping-mapping-widget";
+import {
+  CalculatedProperty,
+  CustomCalculation,
+  Group,
+  Groupings,
+  GroupProperty,
+  Mapping,
+  PropertyMenu,
+} from "@itwin/grouping-mapping-widget";
 import { Text } from "@itwin/itwinui-react";
-import React from "react";
 
-export class GroupProvider implements UiItemsProvider {
-  public readonly id = "GroupProvider";
+export class PropertyMenuProvider implements UiItemsProvider {
+  public readonly id = "PropertyProvider";
 
   constructor(
     private readonly _props: {
       mapping?: Mapping;
-      emphasizeElements: boolean;
-      onClickGroupTitle: (group: Group) => void;
+      group?: Group;
+      onClickAddGroupProperty?: () => void;
+      onClickModifyGroupProperty?: (groupProperty: GroupProperty) => void;
+      onClickAddCalculatedProperty?: () => void;
+      onClickModifyCalculatedProperty?: (calculatedProperty: CalculatedProperty) => void;
+      onClickAddCustomCalculationProperty?: () => void;
+      onClickModifyCustomCalculation?: (customCalculation: CustomCalculation) => void;
     }
   ) { }
 
@@ -40,21 +52,23 @@ export class GroupProvider implements UiItemsProvider {
       stageUsage === StageUsage.General
     ) {
       const GroupWidget: AbstractWidgetProps = {
-        id: "groups",
+        id: "properties",
         label: this._props.mapping
-          ? `Groups for ${this._props.mapping?.mappingName}`
-          : "Groups",
+          ? `Properties for ${this._props.group?.groupName}`
+          : "Properties",
         getWidgetContent: () => {
           return (
             <WidgetContent>
-              {this._props.mapping ? (
-                <Groupings
+              {this._props.mapping && this._props.group ? (
+                <PropertyMenu
                   mapping={this._props.mapping}
-                  onClickGroupTitle={this._props.onClickGroupTitle}
-                  emphasizeElements={this._props.emphasizeElements}
+                  group={this._props.group}
+                  onClickModifyGroupProperty={this._props.onClickModifyGroupProperty}
+                  onClickModifyCalculatedProperty={this._props.onClickModifyCalculatedProperty}
+                  onClickModifyCustomCalculation={this._props.onClickModifyCustomCalculation}
                 />
               ) : (
-                <Text>Please select a workflow</Text>
+                <Text>Please select a workflow and group</Text>
               )}
             </WidgetContent>
           );
