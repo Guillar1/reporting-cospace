@@ -37,7 +37,7 @@ export class MappingProvider implements UiItemsProvider {
         id: "mappings",
         label: "Workflows",
         getWidgetContent: () => {
-          return <WidgetContent><Mappings {...this._props} /></WidgetContent>
+          return <WidgetContent><Mappings {...this._props} displayStrings={{ mappings: "Workflows" }} /></WidgetContent>
         },
       };
 

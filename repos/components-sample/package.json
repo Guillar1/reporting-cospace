@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@bentley/icons-generic": "^1.0.34",
-    "@bentley/react-scripts": "^4.0.7",
+    "@bentley/react-scripts": "^5.0.4",
     "@itwin/appui-abstract": "^3.3.1",
     "@itwin/appui-layout-react": "^3.3.1",
     "@itwin/appui-react": "^3.3.1",
@@ -47,13 +47,12 @@
     "react-router-dom": "^6.3.0",
     "redux": "^4.2.0",
     "typescript": "^4.8.2",
-    "cross-fetch": "^3.1.5",
     "@itwin/measure-tools-react": "^0.7.3",
     "@itwin/property-grid-react": "^0.5.5",
     "@itwin/tree-widget-react": "^0.4.7"
   },
   "devDependencies": {
-    "@itwin/itwinui-css": "^0.61.0",
+    "@itwin/itwinui-css": "^0.63.2",
     "@itwin/itwinui-layouts-css": "^0.1.3"
   },
   "scripts": {

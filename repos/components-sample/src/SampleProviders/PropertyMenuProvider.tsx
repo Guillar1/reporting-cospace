@@ -53,7 +53,7 @@ export class PropertyMenuProvider implements UiItemsProvider {
     ) {
       const GroupWidget: AbstractWidgetProps = {
         id: "properties",
-        label: this._props.mapping
+        label: this._props.group
           ? `Properties for ${this._props.group?.groupName}`
           : "Properties",
         getWidgetContent: () => {
@@ -63,6 +63,7 @@ export class PropertyMenuProvider implements UiItemsProvider {
                 <PropertyMenu
                   mapping={this._props.mapping}
                   group={this._props.group}
+                  color="red"
                   onClickModifyGroupProperty={this._props.onClickModifyGroupProperty}
                   onClickModifyCalculatedProperty={this._props.onClickModifyCalculatedProperty}
                   onClickModifyCustomCalculation={this._props.onClickModifyCustomCalculation}

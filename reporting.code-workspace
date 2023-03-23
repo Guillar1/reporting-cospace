@@ -12,18 +12,23 @@
     {
       "name": "vcr",
       "path": "repos\\viewer-components-react"
-    },
+    }
   ],
   "settings": {
     "search.exclude": {
       "**/node_modules": true,
-      "**/lib": true,
+      "**/lib": true
     },
     "files.exclude": {
       "**/lib": false,
       "**/node_modules": false,
       "repos/": false
     },
-    "eslint.workingDirectories": ["repos/viewer-components-react"]
+    "eslint.workingDirectories": ["repos/viewer-components-react"],
+    "jest.disabledWorkspaceFolders": [
+      "components-sample",
+      "reporting-cospace",
+      "viewer"
+    ]
   }
 }

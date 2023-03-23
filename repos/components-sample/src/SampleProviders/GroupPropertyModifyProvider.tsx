@@ -32,7 +32,7 @@ export class GroupPropertyModifyProvider implements UiItemsProvider {
         stageUsage === StageUsage.General)
     ) {
       const GroupPropertyModifyWidget: AbstractWidgetProps = {
-        id: "modifyGroupPropperty",
+        id: "modifyGroupProperty",
         label: "Modify Group Property",
         getWidgetContent: () => {
           return <WidgetContent><GroupPropertyAction {...this._props} /></WidgetContent>;

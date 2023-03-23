@@ -5,7 +5,7 @@
 
 import "./App.scss";
 import { PageLayout } from "@itwin/itwinui-layouts-react";
-import '@itwin/itwinui-layouts-css/dist/styles.css';
+import '@itwin/itwinui-layouts-css/styles.css';
 import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import SelectIModel from "./SelectIModel";

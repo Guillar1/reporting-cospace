@@ -12,12 +12,12 @@ import {
   StageUsage,
 } from "@itwin/appui-abstract";
 import { WidgetContent } from "../WidgetContent";
-import { GroupPropertyAction, GroupPropertyActionProps } from "@itwin/grouping-mapping-widget"
+import { CustomCalculationAction, CustomCalculationActionProps } from "@itwin/grouping-mapping-widget"
 
-export class GroupPropertyCreateProvider implements UiItemsProvider {
-  public readonly id = "GroupPropertyCreateProvider";
+export class CustomCalculationModifyProvider implements UiItemsProvider {
+  public readonly id = "CustomCalculationModifyProvider";
 
-  constructor(private readonly _props: GroupPropertyActionProps) { }
+  constructor(private readonly _props: CustomCalculationActionProps) { }
 
   public provideWidgets(
     _stageId: string,
@@ -31,15 +31,15 @@ export class GroupPropertyCreateProvider implements UiItemsProvider {
         section === StagePanelSection.End &&
         stageUsage === StageUsage.General)
     ) {
-      const GroupPropertyCreateWidget: AbstractWidgetProps = {
-        id: "createGroupProperty",
-        label: "Create Group Property",
+      const CustomCalculationPropertyModifyWidget: AbstractWidgetProps = {
+        id: "modifyGroupCustomCalculationProperty",
+        label: "Modify Custom Calculation Property",
         getWidgetContent: () => {
-          return <WidgetContent><GroupPropertyAction {...this._props} /></WidgetContent>;
+          return <WidgetContent><CustomCalculationAction {...this._props} /></WidgetContent>;
         },
       };
 
-      widgets.push(GroupPropertyCreateWidget);
+      widgets.push(CustomCalculationPropertyModifyWidget);
     }
 
     return widgets;

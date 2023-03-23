@@ -23,7 +23,9 @@ export class GroupProvider implements UiItemsProvider {
     private readonly _props: {
       mapping?: Mapping;
       emphasizeElements: boolean;
+      isNonEmphasizedSelectable: boolean;
       onClickGroupTitle: (group: Group) => void;
+      onClickGroupModify: (group: Group, queryGenerationType: string) => void;
     }
   ) { }
 
@@ -52,6 +54,8 @@ export class GroupProvider implements UiItemsProvider {
                   mapping={this._props.mapping}
                   onClickGroupTitle={this._props.onClickGroupTitle}
                   emphasizeElements={this._props.emphasizeElements}
+                  isNonEmphasizedSelectable = {this._props.isNonEmphasizedSelectable}
+                  onClickGroupModify={this._props.onClickGroupModify}
                 />
               ) : (
                 <Text>Please select a workflow</Text>

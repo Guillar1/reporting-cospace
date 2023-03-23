@@ -12,12 +12,12 @@ import {
   StageUsage,
 } from "@itwin/appui-abstract";
 import { WidgetContent } from "../WidgetContent";
-import { GroupPropertyAction, GroupPropertyActionProps } from "@itwin/grouping-mapping-widget"
+import { CalculatedPropertyAction, CalculatedPropertyActionProps } from "@itwin/grouping-mapping-widget"
 
-export class GroupPropertyCreateProvider implements UiItemsProvider {
-  public readonly id = "GroupPropertyCreateProvider";
+export class CalculatedPropertyModifyProvider implements UiItemsProvider {
+  public readonly id = "CalculatedPropertyModifyProvider";
 
-  constructor(private readonly _props: GroupPropertyActionProps) { }
+  constructor(private readonly _props: CalculatedPropertyActionProps) { }
 
   public provideWidgets(
     _stageId: string,
@@ -31,15 +31,15 @@ export class GroupPropertyCreateProvider implements UiItemsProvider {
         section === StagePanelSection.End &&
         stageUsage === StageUsage.General)
     ) {
-      const GroupPropertyCreateWidget: AbstractWidgetProps = {
-        id: "createGroupProperty",
-        label: "Create Group Property",
+      const CalculatedPropertyModifyWidget: AbstractWidgetProps = {
+        id: "modifyGroupCalculatedProperty",
+        label: "Modify Group Calculated Property",
         getWidgetContent: () => {
-          return <WidgetContent><GroupPropertyAction {...this._props} /></WidgetContent>;
+          return <WidgetContent><CalculatedPropertyAction {...this._props} /></WidgetContent>;
         },
       };
 
-      widgets.push(GroupPropertyCreateWidget);
+      widgets.push(CalculatedPropertyModifyWidget);
     }
 
     return widgets;

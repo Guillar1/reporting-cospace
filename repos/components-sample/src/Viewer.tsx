@@ -17,15 +17,12 @@ import {
 } from "@itwin/web-viewer-react";
 import {
   MeasureTools,
-  MeasureToolsUiItemsProvider,
 } from "@itwin/measure-tools-react";
 import {
   PropertyGridManager,
-  PropertyGridUiItemsProvider,
 } from "@itwin/property-grid-react";
 import {
   TreeWidget,
-  TreeWidgetUiItemsProvider,
 } from "@itwin/tree-widget-react";
 import { useCallback, useMemo, useState } from "react";
 import { GroupProvider } from "./SampleProviders/GroupProvider";
@@ -38,6 +35,11 @@ import { MappingModifyProvider } from "./SampleProviders/MappingModifyProvider";
 import { PropertyMenuProvider } from "./SampleProviders/PropertyMenuProvider";
 import { GroupPropertyCreateProvider } from "./SampleProviders/GroupPropertyCreateProvider";
 import { GroupPropertyModifyProvider } from "./SampleProviders/GroupPropertyModifyProvider";
+import { CalculatedPropertyCreateProvider } from "./SampleProviders/CalculatedPropertyCreateProvider";
+import { CalculatedPropertyModifyProvider } from "./SampleProviders/CalculatedPropertyModifyProvider";
+import { CustomCalculationCreateProvider } from "./SampleProviders/CustomCalculationCreateProvider";
+import { CustomCalculationModifyProvider } from "./SampleProviders/CustomCalculationModifyProvider";
+import { GroupModifyProvider } from "./SampleProviders/GroupModifyProvider";
 
 interface SampleViewerProps {
   iTwinId: string;
@@ -86,6 +88,8 @@ export const SampleViewer = ({
   const [mapping, setMapping] = useState<Mapping | undefined>()
   const [modifyingMapping, setModifyingMapping] = useState<Mapping | undefined>();
   const [group, setGroup] = useState<Group | undefined>();
+  const [modifyingGroup, setModifyingGroup] = useState<Group | undefined>()
+  const [modifyingGroupQG, setModifyingGroupQG] = useState<string>("")
   const [modifyingProperty, setModifyingProperty] = useState<GroupProperty | undefined>();
   const [modifyingCalculatedProperty, setModifyingCalculatedProperty] = useState<CalculatedProperty | undefined>();
   const [modifyingCustomCalculation, setModifyingCustomCalculation] = useState<CustomCalculation | undefined>();
@@ -139,13 +143,26 @@ export const SampleViewer = ({
     toaster.positive("Save successful!");
   };
 
+  const clearOutProperties = () => {
+    setModifyingCalculatedProperty(undefined);
+    setModifyingCustomCalculation(undefined);
+    setModifyingProperty(undefined);
+  }
+
   const uiProviders = useMemo(() => [
     // new TreeWidgetUiItemsProvider(),
     // new PropertyGridUiItemsProvider({
     //   enableCopyingPropertyText: true,
     // }),
     // new MeasureToolsUiItemsProvider(),
-    new MappingProvider({ onClickMappingTitle: ((m) => setMapping(m)), onClickMappingModify: ((m) => setModifyingMapping(m)) }),
+    new MappingProvider({
+      onClickMappingTitle: ((m) => {
+        setGroup(undefined);
+        setModifyingGroup(undefined)
+        clearOutProperties();
+        setMapping(m)
+      }), onClickMappingModify: ((m) => setModifyingMapping(m))
+    }),
     new MappingCreateProvider({ onSaveSuccess: displaySaveSuccess, }),
     modifyingMapping ? new MappingModifyProvider({
       mapping: modifyingMapping, onSaveSuccess: () => {
@@ -154,20 +171,43 @@ export const SampleViewer = ({
       },
       onClickCancel: () => { setModifyingMapping(undefined) }
     }) : [],
-    new GroupProvider({ mapping: mapping, emphasizeElements: false, onClickGroupTitle: setGroup }),
+    new GroupProvider({
+      mapping: mapping, onClickGroupModify: (g, q) => { setModifyingGroup(g); setModifyingGroupQG((q)) }, emphasizeElements: true, isNonEmphasizedSelectable: true, onClickGroupTitle: (g) => {
+        clearOutProperties()
+        setGroup(g)
+      }
+    }),
     mapping ? new GroupActionProvider({ mappingId: mapping.id, onSaveSuccess: displaySaveSuccess, queryGenerationType: "Selection" }) : [],
+    mapping && modifyingGroup ? new GroupModifyProvider({ mappingId: mapping.id, onSaveSuccess: displaySaveSuccess, queryGenerationType: modifyingGroupQG, group: modifyingGroup }) : [],
     new PropertyMenuProvider({ mapping: mapping, group: group, onClickModifyGroupProperty: setModifyingProperty, onClickModifyCalculatedProperty: setModifyingCalculatedProperty, onClickModifyCustomCalculation: setModifyingCustomCalculation }),
-    mapping && group ? new GroupPropertyCreateProvider({ onSaveSuccess: displaySaveSuccess, mapping: mapping, group: group }) : [],
+    mapping && group ? new GroupPropertyCreateProvider({ onSaveSuccess: displaySaveSuccess, mappingId: mapping.id, group: group }) : [],
     mapping && group && modifyingProperty ? new GroupPropertyModifyProvider({
-      mapping: mapping, group: group, groupProperty: modifyingProperty,
+      mappingId: mapping.id, group: group, groupProperty: modifyingProperty,
       onSaveSuccess: () => {
         displaySaveSuccess();
         setModifyingProperty(undefined)
       },
       onClickCancel: () => setModifyingProperty(undefined)
+    }) : [],
+    mapping && group ? new CalculatedPropertyCreateProvider({ onSaveSuccess: displaySaveSuccess, mappingId: mapping.id, group: group }) : [],
+    mapping && group && modifyingCalculatedProperty ? new CalculatedPropertyModifyProvider({
+      mappingId: mapping.id, group: group, calculatedProperty: modifyingCalculatedProperty,
+      onSaveSuccess: () => {
+        displaySaveSuccess();
+        setModifyingCalculatedProperty(undefined)
+      },
+      onClickCancel: () => setModifyingCalculatedProperty(undefined)
+    }) : [],
+    mapping && group ? new CustomCalculationCreateProvider({ onSaveSuccess: displaySaveSuccess, mappingId: mapping.id, groupId: group.id }) : [],
+    mapping && group && modifyingCustomCalculation ? new CustomCalculationModifyProvider({
+      mappingId: mapping.id, groupId: group.id, customCalculation: modifyingCustomCalculation,
+      onSaveSuccess: () => {
+        displaySaveSuccess();
+        setModifyingCustomCalculation(undefined)
+      },
+      onClickCancel: () => setModifyingCustomCalculation(undefined)
     }) : []
-  ].flatMap((x) => x), [modifyingMapping, mapping, group, modifyingProperty])
-
+  ].flatMap((x) => x), [modifyingMapping, mapping, modifyingGroup, modifyingGroupQG, group, modifyingProperty, modifyingCalculatedProperty, modifyingCustomCalculation])
 
   return (
     <GroupingMappingContext
