@@ -1,7 +1,9 @@
 packages:
   - "repos/viewer"
   - "repos/components-sample"
+  - "repos/carbon-portal"
   # https://github.com/iTwin/viewer-components-react
   - "repos/viewer-components-react/packages/itwin/grouping-mapping-widget"
   - "repos/viewer-components-react/packages/itwin/reports-config-widget"
+  - "repos/viewer-components-react/packages/itwin/ec3-widget"
   # - "repos/viewer-components-react/packages/itwin/one-click-lca-widget"

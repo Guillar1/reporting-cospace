@@ -3,33 +3,34 @@ import {
   IModelApp,
   FitViewTool,
   StandardViewId,
+  CheckpointConnection,
+  IModelConnection,
 } from "@itwin/core-frontend";
 import {
   CalculatedProperty,
   CustomCalculation,
   Group,
-  GroupingMappingContext, GroupingMappingCustomUI, GroupingMappingCustomUIType, GroupProperty, GroupQueryBuilderCustomUI, ManualGroupingCustomUI, Mapping, SearchGroupingCustomUI
+  GroupAction,
+  GroupingMappingContext,
+  GroupingMappingCustomUI,
+  GroupingMappingCustomUIType,
+  Groupings,
+  GroupProperty,
+  GroupQueryBuilderCustomUI,
+  ManualGroupingCustomUI,
+  Mapping,
+  SearchGroupingCustomUI,
 } from "@itwin/grouping-mapping-widget";
-import {
-  ItwinViewerUi,
-  Viewer,
-  ViewerAuthorizationClient,
-} from "@itwin/web-viewer-react";
-import {
-  MeasureTools,
-} from "@itwin/measure-tools-react";
-import {
-  PropertyGridManager,
-} from "@itwin/property-grid-react";
-import {
-  TreeWidget,
-} from "@itwin/tree-widget-react";
-import { useCallback, useMemo, useState } from "react";
+import { Viewer, ViewerAuthorizationClient } from "@itwin/web-viewer-react";
+import { MeasureTools } from "@itwin/measure-tools-react";
+import { PropertyGridManager } from "@itwin/property-grid-react";
+import { TreeWidget } from "@itwin/tree-widget-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { GroupProvider } from "./SampleProviders/GroupProvider";
 import { MappingProvider } from "./SampleProviders/MappingProvider";
 import { GroupActionProvider } from "./SampleProviders/GroupActionProvider";
 import { SvgCursor, SvgDraw, SvgSearch } from "@itwin/itwinui-icons-react";
-import { toaster } from "@itwin/itwinui-react";
+import { toaster, Text } from "@itwin/itwinui-react";
 import { MappingCreateProvider } from "./SampleProviders/MappingCreateProvider";
 import { MappingModifyProvider } from "./SampleProviders/MappingModifyProvider";
 import { PropertyMenuProvider } from "./SampleProviders/PropertyMenuProvider";
@@ -40,28 +41,29 @@ import { CalculatedPropertyModifyProvider } from "./SampleProviders/CalculatedPr
 import { CustomCalculationCreateProvider } from "./SampleProviders/CustomCalculationCreateProvider";
 import { CustomCalculationModifyProvider } from "./SampleProviders/CustomCalculationModifyProvider";
 import { GroupModifyProvider } from "./SampleProviders/GroupModifyProvider";
+import { GroupViewerProvider } from "./SampleProviders/GroupViewerProvider";
+import {
+  BentleyCloudRpcManager,
+  BentleyCloudRpcParams,
+  IModelReadRpcInterface,
+} from "@itwin/core-common";
+import { FrontendIModelsAccess } from "@itwin/imodels-access-frontend";
 
 interface SampleViewerProps {
   iTwinId: string;
   iModelId: string;
   prefix: "" | "dev" | "qa" | undefined;
   authClient: ViewerAuthorizationClient;
+  accessToken: string;
 }
 
-export const Default3DNoSelection: ItwinViewerUi = {
-  hideTreeView: true,
-  hideToolSettings: true,
-  hidePropertyGrid: true,
-};
+// export const Default3DNoSelection: ItwinViewerUi = {
+//   hideTreeView: true,
+//   hideToolSettings: true,
+//   hidePropertyGrid: true,
+// };
 
 const defaultGroupingUI: GroupingMappingCustomUI[] = [
-  {
-    name: "Selection",
-    displayLabel: "Selection",
-    type: GroupingMappingCustomUIType.Grouping,
-    icon: <SvgCursor />,
-    uiComponent: GroupQueryBuilderCustomUI,
-  },
   {
     name: "Search",
     displayLabel: "Search",
@@ -78,22 +80,45 @@ const defaultGroupingUI: GroupingMappingCustomUI[] = [
   },
 ];
 
-
 export const SampleViewer = ({
   iTwinId,
   iModelId,
   authClient,
   prefix,
+  accessToken,
 }: SampleViewerProps) => {
-  const [mapping, setMapping] = useState<Mapping | undefined>()
-  const [modifyingMapping, setModifyingMapping] = useState<Mapping | undefined>();
+  const [mapping, setMapping] = useState<Mapping | undefined>({
+    id: "613a6ff1-be0c-4697-bca6-3c254cc8a6ed",
+    mappingName: "test",
+    description: "",
+    extractionEnabled: true,
+    createdOn: "2023-02-08T08:42:32+00:00",
+    createdBy: "Guillermo.Rodriguez@bentley.com",
+    modifiedOn: "2023-03-21T11:54:36+00:00",
+    modifiedBy: "Vikte.Baranauskiene@bentley.com",
+    _links: {
+      imodel: {
+        href: "https://api.bentley.com/imodels/dfee5975-79cb-4166-8022-ce902ede0175",
+      },
+    },
+  });
+  const [iModelConnection, setIModelConnection] = useState<
+    IModelConnection | undefined
+  >();
+  const [modifyingMapping, setModifyingMapping] = useState<
+    Mapping | undefined
+  >();
   const [group, setGroup] = useState<Group | undefined>();
-  const [modifyingGroup, setModifyingGroup] = useState<Group | undefined>()
-  const [modifyingGroupQG, setModifyingGroupQG] = useState<string>("")
-  const [modifyingProperty, setModifyingProperty] = useState<GroupProperty | undefined>();
-  const [modifyingCalculatedProperty, setModifyingCalculatedProperty] = useState<CalculatedProperty | undefined>();
-  const [modifyingCustomCalculation, setModifyingCustomCalculation] = useState<CustomCalculation | undefined>();
-
+  const [modifyingGroup, setModifyingGroup] = useState<Group | undefined>();
+  const [modifyingGroupQG, setModifyingGroupQG] = useState<string>("");
+  const [modifyingProperty, setModifyingProperty] = useState<
+    GroupProperty | undefined
+  >();
+  const [modifyingCalculatedProperty, setModifyingCalculatedProperty] =
+    useState<CalculatedProperty | undefined>();
+  const [modifyingCustomCalculation, setModifyingCustomCalculation] = useState<
+    CustomCalculation | undefined
+  >();
 
   /** NOTE: This function will execute the "Fit View" tool after the iModel is loaded into the Viewer.
    * This will provide an "optimal" view of the model. However, it will override any default views that are
@@ -138,7 +163,7 @@ export const SampleViewer = ({
 
   const displaySaveSuccess = () => {
     toaster.setSettings({
-      placement: 'top',
+      placement: "top",
     });
     toaster.positive("Save successful!");
   };
@@ -147,72 +172,203 @@ export const SampleViewer = ({
     setModifyingCalculatedProperty(undefined);
     setModifyingCustomCalculation(undefined);
     setModifyingProperty(undefined);
-  }
+  };
 
-  const uiProviders = useMemo(() => [
-    // new TreeWidgetUiItemsProvider(),
-    // new PropertyGridUiItemsProvider({
-    //   enableCopyingPropertyText: true,
-    // }),
-    // new MeasureToolsUiItemsProvider(),
-    new MappingProvider({
-      onClickMappingTitle: ((m) => {
-        setGroup(undefined);
-        setModifyingGroup(undefined)
-        clearOutProperties();
-        setMapping(m)
-      }), onClickMappingModify: ((m) => setModifyingMapping(m))
-    }),
-    new MappingCreateProvider({ onSaveSuccess: displaySaveSuccess, }),
-    modifyingMapping ? new MappingModifyProvider({
-      mapping: modifyingMapping, onSaveSuccess: () => {
-        displaySaveSuccess();
-        setModifyingMapping(undefined)
-      },
-      onClickCancel: () => { setModifyingMapping(undefined) }
-    }) : [],
-    new GroupProvider({
-      mapping: mapping, onClickGroupModify: (g, q) => { setModifyingGroup(g); setModifyingGroupQG((q)) }, emphasizeElements: true, isNonEmphasizedSelectable: true, onClickGroupTitle: (g) => {
-        clearOutProperties()
-        setGroup(g)
-      }
-    }),
-    mapping ? new GroupActionProvider({ mappingId: mapping.id, onSaveSuccess: displaySaveSuccess, queryGenerationType: "Selection" }) : [],
-    mapping && modifyingGroup ? new GroupModifyProvider({ mappingId: mapping.id, onSaveSuccess: displaySaveSuccess, queryGenerationType: modifyingGroupQG, group: modifyingGroup }) : [],
-    new PropertyMenuProvider({ mapping: mapping, group: group, onClickModifyGroupProperty: setModifyingProperty, onClickModifyCalculatedProperty: setModifyingCalculatedProperty, onClickModifyCustomCalculation: setModifyingCustomCalculation }),
-    mapping && group ? new GroupPropertyCreateProvider({ onSaveSuccess: displaySaveSuccess, mappingId: mapping.id, group: group }) : [],
-    mapping && group && modifyingProperty ? new GroupPropertyModifyProvider({
-      mappingId: mapping.id, group: group, groupProperty: modifyingProperty,
-      onSaveSuccess: () => {
-        displaySaveSuccess();
-        setModifyingProperty(undefined)
-      },
-      onClickCancel: () => setModifyingProperty(undefined)
-    }) : [],
-    mapping && group ? new CalculatedPropertyCreateProvider({ onSaveSuccess: displaySaveSuccess, mappingId: mapping.id, group: group }) : [],
-    mapping && group && modifyingCalculatedProperty ? new CalculatedPropertyModifyProvider({
-      mappingId: mapping.id, group: group, calculatedProperty: modifyingCalculatedProperty,
-      onSaveSuccess: () => {
-        displaySaveSuccess();
-        setModifyingCalculatedProperty(undefined)
-      },
-      onClickCancel: () => setModifyingCalculatedProperty(undefined)
-    }) : [],
-    mapping && group ? new CustomCalculationCreateProvider({ onSaveSuccess: displaySaveSuccess, mappingId: mapping.id, groupId: group.id }) : [],
-    mapping && group && modifyingCustomCalculation ? new CustomCalculationModifyProvider({
-      mappingId: mapping.id, groupId: group.id, customCalculation: modifyingCustomCalculation,
-      onSaveSuccess: () => {
-        displaySaveSuccess();
-        setModifyingCustomCalculation(undefined)
-      },
-      onClickCancel: () => setModifyingCustomCalculation(undefined)
-    }) : []
-  ].flatMap((x) => x), [modifyingMapping, mapping, modifyingGroup, modifyingGroupQG, group, modifyingProperty, modifyingCalculatedProperty, modifyingCustomCalculation])
+  const uiProviders = useMemo(
+    () =>
+      [
+        // new TreeWidgetUiItemsProvider(),
+        // new PropertyGridUiItemsProvider({
+        //   enableCopyingPropertyText: true,
+        // }),
+        // new MeasureToolsUiItemsProvider(),
+        new MappingProvider({
+          onClickMappingTitle: (m) => {
+            setGroup(undefined);
+            setModifyingGroup(undefined);
+            clearOutProperties();
+            setMapping(m);
+          },
+          onClickMappingModify: (m) => setModifyingMapping(m),
+        }),
+        new MappingCreateProvider({ onSaveSuccess: displaySaveSuccess }),
+        modifyingMapping
+          ? new MappingModifyProvider({
+            mapping: modifyingMapping,
+            onSaveSuccess: () => {
+              displaySaveSuccess();
+              setModifyingMapping(undefined);
+            },
+            onClickCancel: () => {
+              setModifyingMapping(undefined);
+            },
+          })
+          : [],
+        new GroupProvider({
+          mapping: mapping,
+          onClickGroupModify: (g, q) => {
+            setModifyingGroup(g);
+            setModifyingGroupQG(q);
+          },
+          emphasizeElements: true,
+          isNonEmphasizedSelectable: true,
+          onClickGroupTitle: (g) => {
+            clearOutProperties();
+            setGroup(g);
+          },
+        }),
+        new GroupViewerProvider({
+          mapping: mapping,
+          onClickGroupModify: (g, q) => {
+            setModifyingGroup(g);
+            setModifyingGroupQG(q);
+          },
+          emphasizeElements: true,
+          isNonEmphasizedSelectable: true,
+          onClickGroupTitle: (g) => {
+            clearOutProperties();
+            setGroup(g);
+          },
+        }),
+        mapping
+          ? new GroupActionProvider({
+            mappingId: mapping.id,
+            onSaveSuccess: displaySaveSuccess,
+            queryGenerationType: "Selection",
+            shouldVisualize: true,
+          })
+          : [],
+        mapping && modifyingGroup
+          ? new GroupModifyProvider({
+            mappingId: mapping.id,
+            onSaveSuccess: displaySaveSuccess,
+            queryGenerationType: modifyingGroupQG,
+            group: modifyingGroup,
+            shouldVisualize: true,
+          })
+          : [],
+        new PropertyMenuProvider({
+          mapping: mapping,
+          group: group,
+          onClickModifyGroupProperty: setModifyingProperty,
+          onClickModifyCalculatedProperty: setModifyingCalculatedProperty,
+          onClickModifyCustomCalculation: setModifyingCustomCalculation,
+        }),
+        mapping && group
+          ? new GroupPropertyCreateProvider({
+            onSaveSuccess: displaySaveSuccess,
+            mappingId: mapping.id,
+            group: group,
+          })
+          : [],
+        mapping && group && modifyingProperty
+          ? new GroupPropertyModifyProvider({
+            mappingId: mapping.id,
+            group: group,
+            groupProperty: modifyingProperty,
+            onSaveSuccess: () => {
+              displaySaveSuccess();
+              setModifyingProperty(undefined);
+            },
+            onClickCancel: () => setModifyingProperty(undefined),
+          })
+          : [],
+        mapping && group
+          ? new CalculatedPropertyCreateProvider({
+            onSaveSuccess: displaySaveSuccess,
+            mappingId: mapping.id,
+            group: group,
+          })
+          : [],
+        mapping && group && modifyingCalculatedProperty
+          ? new CalculatedPropertyModifyProvider({
+            mappingId: mapping.id,
+            group: group,
+            calculatedProperty: modifyingCalculatedProperty,
+            onSaveSuccess: () => {
+              displaySaveSuccess();
+              setModifyingCalculatedProperty(undefined);
+            },
+            onClickCancel: () => setModifyingCalculatedProperty(undefined),
+          })
+          : [],
+        mapping && group
+          ? new CustomCalculationCreateProvider({
+            onSaveSuccess: displaySaveSuccess,
+            mappingId: mapping.id,
+            groupId: group.id,
+          })
+          : [],
+        mapping && group && modifyingCustomCalculation
+          ? new CustomCalculationModifyProvider({
+            mappingId: mapping.id,
+            groupId: group.id,
+            customCalculation: modifyingCustomCalculation,
+            onSaveSuccess: () => {
+              displaySaveSuccess();
+              setModifyingCustomCalculation(undefined);
+            },
+            onClickCancel: () => setModifyingCustomCalculation(undefined),
+          })
+          : [],
+      ].flatMap((x) => x),
+    [
+      modifyingMapping,
+      mapping,
+      modifyingGroup,
+      modifyingGroupQG,
+      group,
+      modifyingProperty,
+      modifyingCalculatedProperty,
+      modifyingCustomCalculation,
+    ]
+  );
+
+  const getAccessToken = useCallback(async () => accessToken, [accessToken]);
+
+  // useEffect(() => {
+  //   const initializeIModelApp = async () => {
+  //     const rpcInterfaces = [IModelReadRpcInterface];
+  //     await IModelApp.startup({
+  //       authorizationClient: authClient,
+  //       rpcInterfaces,
+  //       hubAccess: new FrontendIModelsAccess(),
+  //     });
+
+  //     const cloudRpcParams: BentleyCloudRpcParams = {
+  //       info: { title: 'imodel/rpc', version: '' },
+  //       uriPrefix: 'https://api.bentley.com',
+  //     };
+  //     BentleyCloudRpcManager.initializeClient(cloudRpcParams, rpcInterfaces);
+
+  //     const iModelConn = await CheckpointConnection.openRemote(iTwinId, iModelId);
+  //     setIModelConnection(iModelConn);
+  //   };
+
+  //   initializeIModelApp();
+
+  //   return () => {
+  //     // Clean up code, if necessary
+  //   };
+  // }, [authClient, iModelId, iTwinId]);
 
   return (
     <GroupingMappingContext
       customUIs={defaultGroupingUI}
-      iModelId={iModelId ?? ""} prefix={prefix}>
+      iModelId={iModelId ?? ""}
+      prefix={prefix}
+      getAccessToken={getAccessToken}
+    >
+      {/* {mapping && iModelConnection && <div><GroupAction
+        mappingId={mapping.id}
+        onSaveSuccess={() => { }}
+        shouldVisualize={false}
+        queryGenerationType="Selection"
+        iModelConnection={iModelConnection}
+
+      />
+      </div>
+      } */}
       <Viewer
         iTwinId={iTwinId ?? ""}
         iModelId={iModelId ?? ""}
@@ -221,7 +377,7 @@ export const SampleViewer = ({
         enablePerformanceMonitors={true} // see description in the README (https://www.npmjs.com/package/@itwin/web-viewer-react)
         onIModelAppInit={onIModelAppInit}
         uiProviders={uiProviders}
-        defaultUiConfig={Default3DNoSelection}
+      // defaultUiConfig={Default3DNoSelection}
       />
     </GroupingMappingContext>
   );

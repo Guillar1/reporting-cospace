@@ -12,12 +12,12 @@ import {
   StageUsage,
 } from "@itwin/appui-abstract";
 import { WidgetContent } from "../WidgetContent";
-import { Group, Groupings, Mapping } from "@itwin/grouping-mapping-widget";
+import { Group, GroupsVisualization, Mapping } from "@itwin/grouping-mapping-widget";
 import { Text } from "@itwin/itwinui-react";
 import React from "react";
 
-export class GroupProvider implements UiItemsProvider {
-  public readonly id = "GroupProvider";
+export class GroupViewerProvider implements UiItemsProvider {
+  public readonly id = "GroupViewerProvider";
 
   constructor(
     private readonly _props: {
@@ -42,17 +42,19 @@ export class GroupProvider implements UiItemsProvider {
       stageUsage === StageUsage.General
     ) {
       const GroupWidget: AbstractWidgetProps = {
-        id: "groups",
+        id: "Groups Viewer",
         label: this._props.mapping
-          ? `Groups for ${this._props.mapping?.mappingName}`
-          : "Groups",
+          ? `Groups Viewer for ${this._props.mapping?.mappingName}`
+          : "Groups Viewer",
         getWidgetContent: () => {
           return (
             <WidgetContent>
               {this._props.mapping ? (
-                <Groupings
+                <GroupsVisualization
                   mapping={this._props.mapping}
                   onClickGroupTitle={this._props.onClickGroupTitle}
+                  emphasizeElements={this._props.emphasizeElements}
+                  isNonEmphasizedSelectable={this._props.isNonEmphasizedSelectable}
                   onClickGroupModify={this._props.onClickGroupModify}
                 />
               ) : (

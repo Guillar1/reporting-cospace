@@ -84,12 +84,13 @@ const App: React.FC = () => {
         </Tooltip>
       </PageLayout.Header>
       <PageLayout.Content>
-        {iTwinId && iModelId && AuthClient.client ? (
+        {iTwinId && iModelId && AuthClient.client && accessToken ? (
           <SampleViewer
             iTwinId={iTwinId}
             iModelId={iModelId}
             prefix={prefix}
             authClient={AuthClient.client}
+            accessToken={accessToken}
           />
         ) : iTwinId ? (
           <SelectIModel

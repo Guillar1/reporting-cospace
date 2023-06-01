@@ -20,6 +20,7 @@ import {
   GroupProperty,
   Mapping,
   PropertyMenu,
+  PropertyMenuWithVisualization,
 } from "@itwin/grouping-mapping-widget";
 import { Text } from "@itwin/itwinui-react";
 
@@ -33,11 +34,15 @@ export class PropertyMenuProvider implements UiItemsProvider {
       onClickAddGroupProperty?: () => void;
       onClickModifyGroupProperty?: (groupProperty: GroupProperty) => void;
       onClickAddCalculatedProperty?: () => void;
-      onClickModifyCalculatedProperty?: (calculatedProperty: CalculatedProperty) => void;
+      onClickModifyCalculatedProperty?: (
+        calculatedProperty: CalculatedProperty
+      ) => void;
       onClickAddCustomCalculationProperty?: () => void;
-      onClickModifyCustomCalculation?: (customCalculation: CustomCalculation) => void;
+      onClickModifyCustomCalculation?: (
+        customCalculation: CustomCalculation
+      ) => void;
     }
-  ) { }
+  ) {}
 
   public provideWidgets(
     _stageId: string,
@@ -60,13 +65,19 @@ export class PropertyMenuProvider implements UiItemsProvider {
           return (
             <WidgetContent>
               {this._props.mapping && this._props.group ? (
-                <PropertyMenu
+                <PropertyMenuWithVisualization
                   mapping={this._props.mapping}
                   group={this._props.group}
                   color="red"
-                  onClickModifyGroupProperty={this._props.onClickModifyGroupProperty}
-                  onClickModifyCalculatedProperty={this._props.onClickModifyCalculatedProperty}
-                  onClickModifyCustomCalculation={this._props.onClickModifyCustomCalculation}
+                  onClickModifyGroupProperty={
+                    this._props.onClickModifyGroupProperty
+                  }
+                  onClickModifyCalculatedProperty={
+                    this._props.onClickModifyCalculatedProperty
+                  }
+                  onClickModifyCustomCalculation={
+                    this._props.onClickModifyCustomCalculation
+                  }
                 />
               ) : (
                 <Text>Please select a workflow and group</Text>

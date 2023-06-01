@@ -12,6 +12,7 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
+import { handleEC3AuthCallback } from "@itwin/ec3-widget-react";
 
 if (!process.env.IMJS_AUTH_CLIENT_CLIENT_ID) {
   throw new Error(
@@ -28,12 +29,18 @@ if (!process.env.IMJS_AUTH_CLIENT_REDIRECT_URI) {
     "Please add a valid redirect URI to the .env file and restart the application. See the README for more information."
   );
 }
+globalThis.IMJS_URL_PREFIX = process.env.IMJS_URL_PREFIX || ""
 
 const redirectUrl = new URL(process.env.IMJS_AUTH_CLIENT_REDIRECT_URI);
 if (redirectUrl.pathname === window.location.pathname) {
   BrowserAuthorizationCallbackHandler.handleSigninCallback(
     redirectUrl.toString()
   ).catch(console.error);
+}
+else if (window.location.pathname === "/callback") {
+  handleEC3AuthCallback({
+    clientId: "4YuNFhA8NpcIEDXfxFi81jEebwPj1wESqmZOx8NW",
+  });
 } else {
   ReactDOM.render(
     <React.StrictMode>

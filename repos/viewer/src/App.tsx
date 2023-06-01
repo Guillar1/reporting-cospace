@@ -84,7 +84,7 @@ const App: React.FC = () => {
         </Tooltip>
       </PageLayout.Header>
       <PageLayout.Content>
-        {iTwinId && iModelId && AuthClient.client ? (
+        {/* {iTwinId && iModelId && AuthClient.client ? (
           <SampleViewer
             iTwinId={iTwinId}
             iModelId={iModelId}
@@ -105,7 +105,7 @@ const App: React.FC = () => {
             accessToken={accessToken ?? ""}
             onSelect={onProjectSelect}
           />
-        )}
+        )} */}
       </PageLayout.Content>
     </PageLayout>
   );

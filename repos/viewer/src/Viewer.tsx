@@ -6,9 +6,13 @@ import {
   StandardViewId,
 } from "@itwin/core-frontend";
 import {
+  GroupingMappingCustomUI,
+  GroupingMappingCustomUIType,
   GroupingMappingProvider,
+  ManualGroupingCustomUI,
+  SearchGroupingCustomUI,
 } from "@itwin/grouping-mapping-widget";
-import { ThemeType } from "@itwin/itwinui-react";
+import { Text } from "@itwin/itwinui-react";
 // import { OneClickLCAProvider } from "@itwin/one-click-lca-react";
 import {
   ReportsConfigWidget,
@@ -16,14 +20,16 @@ import {
   REPORTS_CONFIG_BASE_URL,
 } from "@itwin/reports-config-widget-react";
 // import { EC3Provider } from "@itwin/ec3-widget-react";
-import {
-  ItwinViewerUi,
-  Viewer,
-  ViewerAuthorizationClient,
-} from "@itwin/web-viewer-react";
+import { Viewer, ViewerAuthorizationClient } from "@itwin/web-viewer-react";
 import React, { useState } from "react";
 import { useCallback, useMemo, useEffect } from "react";
 import { prefixUrl } from "./App";
+import { EC3Provider } from "@itwin/ec3-widget-react";
+import { SvgDraw, SvgSearch } from "@itwin/itwinui-icons-react";
+import {
+  PropertyGridManager,
+  PropertyGridUiItemsProvider,
+} from "@itwin/property-grid-react";
 
 interface SampleViewerProps {
   iTwinId: string;
@@ -31,23 +37,6 @@ interface SampleViewerProps {
   prefix: "" | "dev" | "qa" | undefined;
   authClient: ViewerAuthorizationClient;
 }
-
-export const Default3DNoSelection: ItwinViewerUi = {
-  contentManipulationTools: {
-    cornerItem: {
-      hideDefault: true,
-    },
-    hideDefaultHorizontalItems: true,
-    hideDefaultVerticalItems: true,
-    verticalItems: {
-      sectionTools: false,
-      measureTools: false,
-      selectTool: false,
-    },
-  },
-  hideToolSettings: true,
-  hidePropertyGrid: true,
-};
 
 const mapping = {
   id: "1a61a22f-e2db-4889-bf4f-2d5959310c1a",
@@ -64,6 +53,30 @@ const mapping = {
     },
   },
 };
+
+const defaultGroupingUI: GroupingMappingCustomUI[] = [
+  {
+    name: "Search",
+    displayLabel: "Search",
+    type: GroupingMappingCustomUIType.Grouping,
+    icon: <SvgSearch />,
+    uiComponent: SearchGroupingCustomUI,
+  },
+  {
+    name: "Manual",
+    displayLabel: "Manual",
+    type: GroupingMappingCustomUIType.Grouping,
+    icon: <SvgDraw />,
+    uiComponent: ManualGroupingCustomUI,
+  },
+  {
+    name: "Test",
+    displayLabel: "Test",
+    type: GroupingMappingCustomUIType.Context,
+    icon: <SvgDraw />,
+    uiComponent: () => <Text>test</Text>,
+  },
+];
 
 export const SampleViewer = ({
   iTwinId,
@@ -113,9 +126,10 @@ export const SampleViewer = ({
     // UiFramework.setUiVersion("1")
   };
 
-  useEffect(() => {
-    ReportsConfigWidget.initialize(IModelApp.localization);
-  })
+  const onIModelAppInit = useCallback(async () => {
+    await PropertyGridManager.initialize();
+    await ReportsConfigWidget.initialize();
+  }, []);
 
   const uiProviders = useMemo(() => {
     const uiProviders: UiItemsProvider[] = [
@@ -124,6 +138,13 @@ export const SampleViewer = ({
         undefined,
         prefixUrl(REPORTS_CONFIG_BASE_URL, process.env.IMJS_URL_PREFIX)
       ),
+      new PropertyGridUiItemsProvider({
+        enableCopyingPropertyText: true,
+      }),
+      // new EC3Provider({
+      //   clientId: "4YuNFhA8NpcIEDXfxFi81jEebwPj1wESqmZOx8NW",
+      //   redirectUri: "http://localhost:8887/callback",
+      // }),
     ];
     // if (!prefix) uiProviders.push(new OneClickLCAProvider());
     return uiProviders;
@@ -136,17 +157,18 @@ export const SampleViewer = ({
     };
     void fetchAccessToken();
   });
+
   return (
     <Viewer
       iTwinId={iTwinId}
       iModelId={iModelId}
       authClient={authClient}
       viewCreatorOptions={viewCreatorOptions}
-      // onIModelAppInit={handleOnIModelAppInit}
+      onIModelAppInit={onIModelAppInit}
       // additionalI18nNamespaces={["ReportsConfigWidget"]}
       enablePerformanceMonitors={true} // see description in the README (https://www.npmjs.com/package/@itwin/desktop-viewer-react)
-      theme={"dark"}
-      uiProviders={uiProviders} />
+      uiProviders={uiProviders}
+    />
     // new EC3Provider({ clientId: '4YuNFhA8NpcIEDXfxFi81jEebwPj1wESqmZOx8NW', redirectUri: 'http://localhost:3000/callback' })
     // accessToken && (
     //   <GroupingMappingContext
