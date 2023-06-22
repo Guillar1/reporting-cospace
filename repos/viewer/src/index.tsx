@@ -5,13 +5,12 @@
 
 import "./index.scss";
 
-import { BrowserAuthorizationCallbackHandler } from "@itwin/browser-authorization";
+import { BrowserAuthorizationClient } from "@itwin/browser-authorization";
 import React from "react";
 import ReactDOM from "react-dom";
 
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { BrowserRouter } from "react-router-dom";
 
 if (!process.env.IMJS_AUTH_CLIENT_CLIENT_ID) {
   throw new Error(
@@ -31,15 +30,11 @@ if (!process.env.IMJS_AUTH_CLIENT_REDIRECT_URI) {
 
 const redirectUrl = new URL(process.env.IMJS_AUTH_CLIENT_REDIRECT_URI);
 if (redirectUrl.pathname === window.location.pathname) {
-  BrowserAuthorizationCallbackHandler.handleSigninCallback(
-    redirectUrl.toString()
-  ).catch(console.error);
+  BrowserAuthorizationClient.handleSignInCallback().catch(console.error);
 } else {
   ReactDOM.render(
     <React.StrictMode>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <App />
     </React.StrictMode>,
     document.getElementById("root")
   );

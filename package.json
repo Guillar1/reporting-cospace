@@ -19,8 +19,7 @@
   },
   "pnpm": {
     "overrides": {
-      "@itwin/grouping-mapping-widget": "workspace:*",
-      "@itwin/reports-config-widget-react": "workspace:*"
+      "@itwin/grouping-mapping-widget": "workspace:*"
     },
     "prefer-workspace-packages": true,
     "link-workspace-packages": "deep"

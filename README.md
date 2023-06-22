@@ -10,21 +10,23 @@ Setup a `CoSpace` to link multiple (mono)repos together!
 
 ## Getting started
 
-1. Clone all the repos you want to link together under the `repos` directory.
-
-1. Update the [pnpm-workspace.yaml](pnpm-workspace.yaml) file with all the packages you want to add to your CoSpace.
-
-1. Update the [cospace.code-workspace](cospace.code-workspace) file with all the repos you want to add to your VsCode multi root workspace.
-
-1. PNPM installation
-
-   - If you're using Node.js version ^14.19 or ^16.9 you just need to enable pnpm via corepack.
-   - Otherwise install via `npm i -g pnpm@6.32.3`
-
-1. Run `pnpm install` to install all the packages you've added to your CoSpace.
-
-1. Run `pnpm build` to build all the packages you've added to your CoSpace using your monorepo task runner. I'm using [lage](https://microsoft.github.io/lage/), but [turborepo](https://turborepo.org/docs) should theoretically work.
-
-## Updating packages in Viewer Components React
-
-- Must be done in another folder. Running `rush install` or `rush update` within the CoSpace will break it.
+1. **Clone the `viewer-components-react` repository into the `repos` folder.**
+   1. Navigate to the `repos` directory: `cd ./repos/`
+   2. Clone the repository: `git clone https://github.com/iTwin/viewer-components-react.git`
+   3. Upon completion, you should find a new `viewer-components-react` directory inside the `repos` folder. For instance: `./repos/viewer-components-react`
+2. **Install `pnpm` and the necessary packages.**
+   1. Install `pnpm` globally: `npm install -g pnpm`
+   2. Navigate back to the root directory if not already present: `cd ..`
+   3. Install the packages: `pnpm i`
+3. **Build the `grouping-mapping-widget` package.**
+   1. From anywhere within the root directory, build the package: `pnpm build`
+4. **Update the environment variables in the `viewer` application.**
+   1. Open the `.env` file in `repos/viewer/`.
+   2. Update any necessary or missing variables.
+5. **Start the `viewer` application.**
+   1. Navigate to the viewer directory: `cd ./repos/viewer`
+   2. Start the application: `npm start`
+6. **Development Flow:**
+   1. Make desired changes to the widget.
+   2. Execute `pnpm run build` from any location or `npm run build` from within the widget root directory.
+   3. While the `viewer` application is running, you should be able to observe the changes.

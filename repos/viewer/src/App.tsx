@@ -4,110 +4,143 @@
  *--------------------------------------------------------------------------------------------*/
 
 import "./App.scss";
-import { PageLayout } from "@itwin/itwinui-layouts-react";
-import '@itwin/itwinui-layouts-css/dist/styles.css';
-import React, { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import SelectIModel from "./SelectIModel";
-import SelectProject from "./SelectProject";
-import { IModelFull, ProjectFull } from "@itwin/imodel-browser-react";
-import { SampleViewer } from "./Viewer";
-import { AccessToken } from "@itwin/core-bentley";
-import AuthClient from "./AuthClient";
-import useMediaQuery from "beautiful-react-hooks/useMediaQuery";
-import { IconButton, Tooltip, useTheme } from "@itwin/itwinui-react";
-import { SvgMoon, SvgSun } from "@itwin/itwinui-icons-react";
 
-export const prefixUrl = (baseUrl?: string, prefix?: string) => {
-  if (prefix && baseUrl) {
-    return baseUrl.replace("api.bentley.com", `${prefix}api.bentley.com`);
-  }
-  return baseUrl;
-};
+import { BrowserAuthorizationClient } from "@itwin/browser-authorization";
+import type { ScreenViewport } from "@itwin/core-frontend";
+import { FitViewTool, IModelApp, StandardViewId } from "@itwin/core-frontend";
+import { FillCentered } from "@itwin/core-react";
+import { ProgressLinear } from "@itwin/itwinui-react";
+import {
+  MeasureTools,
+  MeasureToolsUiItemsProvider,
+} from "@itwin/measure-tools-react";
+import {
+  PropertyGridManager,
+  PropertyGridUiItemsProvider,
+} from "@itwin/property-grid-react";
+import {
+  TreeWidget,
+  TreeWidgetUiItemsProvider,
+} from "@itwin/tree-widget-react";
+import {
+  useAccessToken,
+  Viewer,
+  ViewerContentToolsProvider,
+  ViewerNavigationToolsProvider,
+  ViewerPerformance,
+  ViewerStatusbarItemsProvider,
+} from "@itwin/web-viewer-react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { history } from "./history";
+import { GroupingMappingProvider } from "@itwin/grouping-mapping-widget";
 
 const App: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const [accessToken, setAccessToken] = useState<AccessToken>();
-  const [iModelId, setIModelId] = useState<string>(
-    searchParams.get("iModelId") ?? ""
-  );
-  const [iTwinId, setITwinId] = useState<string>(
-    searchParams.get("iTwinId") ?? ""
+  const [iModelId, setIModelId] = useState(process.env.IMJS_IMODEL_ID);
+  const [iTwinId, setITwinId] = useState(process.env.IMJS_ITWIN_ID);
+
+  const accessToken = useAccessToken();
+
+  const authClient = useMemo(
+    () =>
+      new BrowserAuthorizationClient({
+        scope: process.env.IMJS_AUTH_CLIENT_SCOPES ?? "",
+        clientId: process.env.IMJS_AUTH_CLIENT_CLIENT_ID ?? "",
+        redirectUri: process.env.IMJS_AUTH_CLIENT_REDIRECT_URI ?? "",
+        postSignoutRedirectUri: process.env.IMJS_AUTH_CLIENT_LOGOUT_URI,
+        responseType: "code",
+        authority: process.env.IMJS_AUTH_AUTHORITY,
+      }),
+    []
   );
 
-  const [isDark, setIsDark] = React.useState(useMediaQuery('(prefers-color-scheme: dark)'));
-  useTheme(isDark ? 'dark' : 'light');
+  const login = useCallback(async () => {
+    try {
+      await authClient.signInSilent();
+    } catch {
+      await authClient.signIn();
+    }
+  }, [authClient]);
 
   useEffect(() => {
-    const initAuth = async () => {
-      if (!AuthClient.client) {
-        const client = AuthClient.initialize();
+    void login();
+  }, [login]);
 
-        try {
-          // attempt silent signin
-          await AuthClient.signInSilent();
-        } catch (error) {
-          // if silent sign in fails, have user manually sign in
-          await AuthClient.signIn();
+  useEffect(() => {
+    if (accessToken) {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has("iTwinId")) {
+        setITwinId(urlParams.get("iTwinId") as string);
+      } else {
+        if (!process.env.IMJS_ITWIN_ID) {
+          throw new Error(
+            "Please add a valid iTwin ID in the .env file and restart the application or add it to the iTwinId query parameter in the url and refresh the page. See the README for more information."
+          );
         }
-
-        setAccessToken(await client.getAccessToken());
       }
-    };
 
-    initAuth().catch(console.error);
+      if (urlParams.has("iModelId")) {
+        setIModelId(urlParams.get("iModelId") as string);
+      }
+    }
+  }, [accessToken]);
 
-    return () => {
-      AuthClient.dispose();
-    };
+  useEffect(() => {
+    if (accessToken && iTwinId) {
+      let queryString = `?iTwinId=${iTwinId}`;
+      if (iModelId) {
+        queryString += `&iModelId=${iModelId}`;
+      }
+
+      history.push(queryString);
+    }
+  }, [accessToken, iTwinId, iModelId]);
+
+  const viewConfiguration = useCallback(() => { }, []);
+
+  const viewCreatorOptions = useMemo(
+    () => ({ viewportConfigurer: viewConfiguration }),
+    [viewConfiguration]
+  );
+
+  const onIModelAppInit = useCallback(async () => {
+    await TreeWidget.initialize();
+    await PropertyGridManager.initialize();
+    await MeasureTools.startup();
   }, []);
 
-  const prefix = `${process.env.IMJS_URL_PREFIX}`.slice(0, -1) as any;
-
-  const onIModelSelect = (iModel: IModelFull) => {
-    setIModelId(iModel.id);
-    searchParams.set("iModelId", iModel.id)
-    setSearchParams(searchParams);
-  };
-  const onProjectSelect = (project: ProjectFull) => {
-    setITwinId(project.id);
-    setSearchParams({ iTwinId: project.id });
-  };
-
   return (
-    <PageLayout>
-      <PageLayout.Header>
-        <Tooltip content={`Switch to ${isDark ? 'light' : 'dark'} theme`} placement='left'>
-          <IconButton className='App-theme-icon' styleType='borderless' onClick={() => setIsDark((dark) => !dark)}>
-            {isDark ? <SvgSun /> : <SvgMoon />}
-          </IconButton>
-        </Tooltip>
-      </PageLayout.Header>
-      <PageLayout.Content>
-        {iTwinId && iModelId && AuthClient.client ? (
-          <SampleViewer
-            iTwinId={iTwinId}
-            iModelId={iModelId}
-            prefix={prefix}
-            authClient={AuthClient.client}
-          />
-        ) : iTwinId ? (
-          <SelectIModel
-            projectId={iTwinId}
-            prefix={prefix}
-            accessToken={accessToken ?? ""}
-            onSelect={onIModelSelect}
-            backFn={() => { setSearchParams({}); setITwinId("") }}
-          />
-        ) : (
-          <SelectProject
-            prefix={prefix}
-            accessToken={accessToken ?? ""}
-            onSelect={onProjectSelect}
-          />
-        )}
-      </PageLayout.Content>
-    </PageLayout>
+    <div className="viewer-container">
+      {!accessToken && (
+        <FillCentered>
+          <div className="signin-content">
+            <ProgressLinear indeterminate={true} labels={["Signing in..."]} />
+          </div>
+        </FillCentered>
+      )}
+      <Viewer
+        iTwinId={iTwinId ?? ""}
+        iModelId={iModelId ?? ""}
+        authClient={authClient}
+        viewCreatorOptions={viewCreatorOptions}
+        enablePerformanceMonitors={true} // see description in the README (https://www.npmjs.com/package/@itwin/web-viewer-react)
+        onIModelAppInit={onIModelAppInit}
+        uiProviders={[
+          new ViewerNavigationToolsProvider(),
+          new ViewerContentToolsProvider({
+            vertical: {
+              measureGroup: false,
+            },
+          }),
+          new ViewerStatusbarItemsProvider(),
+          new TreeWidgetUiItemsProvider(),
+          new PropertyGridUiItemsProvider({
+            enableCopyingPropertyText: true,
+          }),
+          new MeasureToolsUiItemsProvider(),
+          new GroupingMappingProvider(),
+        ]}
+      />
+    </div>
   );
 };
 
