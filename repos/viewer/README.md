@@ -2,17 +2,6 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Grouping & Mapping Widget Development
-
-1. Please follow the [Build Instructions](https://github.com/iTwin/viewer-components-react/blob/master/CONTRIBUTING.md#build-instructions) for Viewer Components React.
-2. Go into `packages\itwin\grouping-mapping-widget` folder in the Viewer Components React directory.
-3. Run `npm link`
-4. Clone this repository in another folder. `git clone`
-5. In the root folder of this app, run `npm install`
-6. After completion, `npm link @itwin/grouping-mapping-widget`
-7. Populate .env variables.
-8. `npm start` will run the app.
-
 ## Environment Variables
 
 Prior to running the app, you will need to add OIDC client configuration to the variables in the .env file with the required scopes:
