@@ -29,7 +29,7 @@ import {
 } from "@itwin/web-viewer-react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { history } from "./history";
-import { GroupingMappingProvider } from "@itwin/grouping-mapping-widget";
+import { ClientPrefix, GroupingMappingProvider } from "@itwin/grouping-mapping-widget";
 
 const App: React.FC = () => {
   const [iModelId, setIModelId] = useState(process.env.IMJS_IMODEL_ID);
@@ -105,6 +105,8 @@ const App: React.FC = () => {
     await MeasureTools.startup();
   }, []);
 
+  const prefix = useMemo(() => `${process.env.IMJS_URL_PREFIX}`.slice(0, -1) as ClientPrefix, [])
+
   return (
     <div className="viewer-container">
       {!accessToken && (
@@ -134,7 +136,7 @@ const App: React.FC = () => {
             enableCopyingPropertyText: true,
           }),
           new MeasureToolsUiItemsProvider(),
-          new GroupingMappingProvider(),
+          new GroupingMappingProvider({ prefix: prefix }),
         ]}
       />
     </div>
