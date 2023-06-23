@@ -28,6 +28,8 @@ if (!process.env.IMJS_AUTH_CLIENT_REDIRECT_URI) {
   );
 }
 
+globalThis.IMJS_URL_PREFIX = process.env.IMJS_URL_PREFIX || ""
+
 const redirectUrl = new URL(process.env.IMJS_AUTH_CLIENT_REDIRECT_URI);
 if (redirectUrl.pathname === window.location.pathname) {
   BrowserAuthorizationClient.handleSignInCallback().catch(console.error);
