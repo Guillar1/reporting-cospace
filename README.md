@@ -10,7 +10,7 @@ Setup a `CoSpace` to link multiple (mono)repos together!
 
 ## Getting started
 
-1. **Install Node.js (Version 16.x)**
+1. **Install Node.js (Version 18.x)**
 
    - You can download Node.js from the official [Node.js website](https://nodejs.org/en/download/).
 
